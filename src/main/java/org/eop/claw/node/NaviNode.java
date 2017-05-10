@@ -6,6 +6,9 @@ package org.eop.claw.node;
  */
 public interface NaviNode {
 
+	String getSegment();
+	void setSegment(String segment);
+	
 	String getName();
 	void setName(String name);
 	
@@ -17,6 +20,5 @@ public interface NaviNode {
 	
 	NodeSetting getNodeSetting();
 	void setNodeSettings(NodeSetting nodeSetting);
-	void addSetting(String name, String value);
-	String getSetting(String name);
+	
 }

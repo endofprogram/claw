@@ -6,4 +6,7 @@ package org.eop.claw.node;
  */
 public class NodeSetting {
 
+	public void addSetting(String name, String value) {
+		
+	}
 }

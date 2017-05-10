@@ -3,6 +3,7 @@ package org.eop.claw.node.analyzer;
 import org.eop.claw.node.NaviNode;
 import org.eop.claw.node.NodeSetting;
 import org.eop.claw.node.ResultType;
+import org.eop.claw.node.navi.NameNode;
 
 /**
  * @author lixinjie
@@ -10,14 +11,14 @@ import org.eop.claw.node.ResultType;
  */
 public class NameNodeAnalyzer extends AbstractNaviNodeAnalyzer {
 
-	protected NameNodeAnalyzer(String indexFlag, String depthFlag) {
+	public NameNodeAnalyzer(String indexFlag, String depthFlag) {
 		super(indexFlag, depthFlag);
 	}
 
 	@Override
 	protected NaviNode buildNaviNode(String name, int depth, ResultType resultType, NodeSetting nodeSetting,
 			String segment) {
-		return null;
+		return new NameNode(segment, name, depth, resultType, nodeSetting);
 	}
 
 }

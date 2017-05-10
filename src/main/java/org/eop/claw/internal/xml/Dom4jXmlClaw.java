@@ -1,9 +1,9 @@
-package old.org.eop.claw.internal.xml;
+package org.eop.claw.internal.xml;
 
 import org.dom4j.Element;
+import org.eop.claw.AbstractClaw;
+import org.eop.claw.IClaw;
 
-import old.org.eop.claw.AbstractClaw;
-import old.org.eop.claw.IClaw;
 import old.org.eop.claw.node.RNode;
 import old.org.eop.claw.node.result.xml.dom4j.Dom4jElementResult;
 /**

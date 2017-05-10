@@ -1,9 +1,10 @@
-package old.org.eop.claw.internal.map;
+package org.eop.claw.internal.map;
 
 import java.util.Map;
 
-import old.org.eop.claw.AbstractClaw;
-import old.org.eop.claw.IClaw;
+import org.eop.claw.AbstractClaw;
+import org.eop.claw.IClaw;
+
 import old.org.eop.claw.node.RNode;
 import old.org.eop.claw.node.result.map.MapResult;
 /**

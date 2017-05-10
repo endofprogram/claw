@@ -1,4 +1,4 @@
-package old.org.eop.claw;
+package org.eop.claw;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import old.org.eop.claw.internal.json.FastJsonClaw;
-import old.org.eop.claw.internal.json.NetsfJsonClaw;
-import old.org.eop.claw.internal.map.MapClaw;
-import old.org.eop.claw.internal.xml.Dom4jXmlClaw;
-import old.org.eop.claw.internal.xml.W3cXmlClaw;
+import org.eop.claw.internal.json.FastJsonClaw;
+import org.eop.claw.internal.json.NetsfJsonClaw;
+import org.eop.claw.internal.map.MapClaw;
+import org.eop.claw.internal.xml.Dom4jXmlClaw;
+import org.eop.claw.internal.xml.W3cXmlClaw;
 /**
  * lixinjie 2016-12-26
  */

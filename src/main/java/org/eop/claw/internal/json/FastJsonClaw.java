@@ -1,9 +1,10 @@
-package old.org.eop.claw.internal.json;
+package org.eop.claw.internal.json;
+
+import org.eop.claw.AbstractClaw;
+import org.eop.claw.IClaw;
 
 import com.alibaba.fastjson.JSONObject;
 
-import old.org.eop.claw.AbstractClaw;
-import old.org.eop.claw.IClaw;
 import old.org.eop.claw.node.RNode;
 import old.org.eop.claw.node.result.json.fastjson.JsonObjectResult;
 /**
