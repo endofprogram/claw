@@ -1,41 +1,38 @@
-package org.eop.claw.node.result.json.netsf;
+package org.eop.claw.node.result.xml.dom4j;
 
-import java.util.List;
-
+import org.dom4j.Element;
 import org.eop.claw.node.navi.NameNode;
 import org.eop.claw.node.result.AbstractListResult;
 import org.eop.claw.node.result.AbstractObjectResult;
 import org.eop.claw.node.result.ElementResult;
 
-import net.sf.json.JSONObject;
-
 /**
  * @author lixinjie
  * @since 2017-05-11
  */
-public class NetsfJsonResult extends AbstractObjectResult {
+public class Dom4jElementResult extends AbstractObjectResult {
 
-	public NetsfJsonResult(JSONObject json) {
-		super(json);
+	public Dom4jElementResult(Element element) {
+		super(element);
 	}
 
 	@Override
 	protected AbstractObjectResult getObjectResult(NameNode nameNode) {
-		return new NetsfJsonResult((JSONObject)getValue(nameNode.getName()));
+		return new Dom4jElementResult(((Element)object).element(nameNode.getName()));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected AbstractListResult getListResult(NameNode nameNode) {
-		return new ListResult((List<Object>)getValue(nameNode.getName()));
+		return new ListResult(((Element)object).elements(nameNode.getName()));
 	}
 
 	@Override
 	protected ElementResult getElementResult(NameNode nameNode) {
-		return new ElementResult(getValue(nameNode.getName()));
+		if ("text".equals(nameNode.getName())) {
+			return new ElementResult(((Element)object).getTextTrim());
+		}
+		return new ElementResult(((Element)object).attributeValue(nameNode.getName()));
 	}
 
-	protected Object getValue(String key) {
-		return ((JSONObject)object).get(key);
-	}
 }

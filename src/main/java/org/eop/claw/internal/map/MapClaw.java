@@ -4,9 +4,8 @@ import java.util.Map;
 
 import org.eop.claw.AbstractClaw;
 import org.eop.claw.IClaw;
-
-import old.org.eop.claw.node.RNode;
-import old.org.eop.claw.node.result.map.MapResult;
+import org.eop.claw.node.ResultNode;
+import org.eop.claw.node.result.map.MapResult;
 /**
  * lixinjie 2016-12-26
  */
@@ -16,14 +15,14 @@ public class MapClaw extends AbstractClaw {
 		this(new MapResult(map));
 	}
 	
-	protected MapClaw(RNode rootRNode) {
-		super(rootRNode);
+	protected MapClaw(ResultNode rootResultNode) {
+		super(rootResultNode);
 	}
 
 	@Override
 	public IClaw getClaw(String path) {
 		crawlRNode(path);
-		return new MapClaw(currentRNode);
+		return new MapClaw(currentResultNode);
 	}
 
 	@Override

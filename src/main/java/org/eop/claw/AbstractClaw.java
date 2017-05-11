@@ -11,28 +11,31 @@ import java.util.Map;
 
 import org.eop.chassis.util.StringUtil;
 import org.eop.chassis.util.TypeUtil;
-
-import old.org.eop.claw.node.RNode;
-import old.org.eop.claw.node.WNode;
-import old.org.eop.claw.node.WNodeAnalyzer;
-import old.org.eop.claw.node.analyzer.ElementNodeAnalyzer;
-import old.org.eop.claw.node.analyzer.IndexNodeAnalyzer;
-import old.org.eop.claw.node.analyzer.ListNodeAnalyzer;
-import old.org.eop.claw.node.analyzer.MapNodeAnalyzer;
+import org.eop.claw.node.NaviNode;
+import org.eop.claw.node.NaviNodeAnalyzer;
+import org.eop.claw.node.ResultNode;
+import org.eop.claw.node.analyzer.IndexNodeAnalyzer;
+import org.eop.claw.node.analyzer.NameNodeAnalyzer;
 /**
  * lixinjie 2016-12-26
  */
 public abstract class AbstractClaw implements IClaw {
 
-	protected List<WNode> wnodeList = new ArrayList<>();
+	protected List<NaviNode> naviNodeList = new ArrayList<>();
 	protected List<String> segmentList = new ArrayList<>();
-	protected Map<String, WNodeAnalyzer> wnodeAnalyzers = new HashMap<>();
-	protected RNode rootRNode;
-	protected RNode currentRNode;
+	protected Map<String, NaviNodeAnalyzer> naviNodeAnalyzers = new HashMap<>();
+	protected ResultNode rootResultNode;
+	protected ResultNode currentResultNode;
+	protected ClawSetting clawSetting;
 	
-	protected AbstractClaw(RNode rootRNode) {
-		this.rootRNode = rootRNode;
-		registerWNodeAnalyzer();
+	protected AbstractClaw(ResultNode rootResultNode) {
+		this(rootResultNode, getDefaultClawSetting());
+	}
+	
+	protected AbstractClaw(ResultNode rootResultNode, ClawSetting clawSetting) {
+		this.rootResultNode = rootResultNode;
+		this.clawSetting = clawSetting;
+		registerNaviNodeAnalyzer();
 	}
 	
 	@Override
@@ -103,7 +106,7 @@ public abstract class AbstractClaw implements IClaw {
 	@Override
 	public Object get(String path) {
 		crawlRNode(path);
-		return currentRNode.getValue();
+		return currentResultNode.getValue();
 	}
 
 	@Override
@@ -114,14 +117,14 @@ public abstract class AbstractClaw implements IClaw {
 	
 	@Override
 	public Object getUnderlyingData() {
-		return rootRNode.getValue();
+		return rootResultNode.getValue();
 	}
 	
 	protected void crawlRNode(String path) {
 		transformPathToNodeList(path);
-		currentRNode = rootRNode;
-		for (WNode wnode : wnodeList) {
-			currentRNode = currentRNode.getResult(wnode);
+		currentResultNode = rootResultNode;
+		for (NaviNode naviNode : naviNodeList) {
+			currentResultNode = currentResultNode.getResult(naviNode);
 		}
 	}
 
@@ -136,21 +139,33 @@ public abstract class AbstractClaw implements IClaw {
 	}
 	
 	protected void transformSegmentListToNodeList(String path) {
-		wnodeList.clear();
+		naviNodeList.clear();
 		for (String segment : segmentList) {
 			transformSegmentToNode(segment);
 		}
 	}
 	
 	protected void transformSegmentToNode(String segment) {
-		WNodeAnalyzer analyzer = wnodeAnalyzers.get(StringUtil.getLast(segment));
-		wnodeList.add(analyzer.analyze(segment));
+		NaviNodeAnalyzer analyzer = getNaviNodeAnalyzer(segment);
+		naviNodeList.add(analyzer.analyze(segment));
 	}
 	
-	protected void registerWNodeAnalyzer() {
-		wnodeAnalyzers.put("}", new MapNodeAnalyzer());
-		wnodeAnalyzers.put("]", new ListNodeAnalyzer());
-		wnodeAnalyzers.put(")", new IndexNodeAnalyzer());
-		wnodeAnalyzers.put(">", new ElementNodeAnalyzer());
+	protected NaviNodeAnalyzer getNaviNodeAnalyzer(String segment) {
+		if (segment.startsWith("")) {
+			return naviNodeAnalyzers.get("index");
+		}
+		return naviNodeAnalyzers.get("name");
+	}
+	
+	protected void registerNaviNodeAnalyzer() {
+		naviNodeAnalyzers.put("name", new NameNodeAnalyzer(clawSetting.getSetting("index.flag"), clawSetting.getSetting("depth.flag")));
+		naviNodeAnalyzers.put("index", new IndexNodeAnalyzer(clawSetting.getSetting("index.flag"), clawSetting.getSetting("depth.flag")));
+	}
+	
+	protected static ClawSetting getDefaultClawSetting() {
+		ClawSetting clawSetting = new ClawSetting();
+		clawSetting.addSetting("index.flag", "#");
+		clawSetting.addSetting("depth.flag", "!");
+		return clawSetting;
 	}
 }
