@@ -20,7 +20,7 @@ public class Dom4jXmlClaw extends AbstractClaw {
 
 	@Override
 	public IClaw getClaw(String path) {
-		crawlRNode(path);
+		crawlResultNode(path);
 		return new Dom4jXmlClaw(currentResultNode);
 	}
 

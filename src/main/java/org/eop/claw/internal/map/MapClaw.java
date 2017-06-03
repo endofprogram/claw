@@ -21,7 +21,7 @@ public class MapClaw extends AbstractClaw {
 
 	@Override
 	public IClaw getClaw(String path) {
-		crawlRNode(path);
+		crawlResultNode(path);
 		return new MapClaw(currentResultNode);
 	}
 

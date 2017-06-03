@@ -29,7 +29,7 @@ public abstract class AbstractClaw implements IClaw {
 	protected ClawSetting clawSetting;
 	
 	protected AbstractClaw(ResultNode rootResultNode) {
-		this(rootResultNode, getDefaultClawSetting());
+		this(rootResultNode, new ClawSetting());
 	}
 	
 	protected AbstractClaw(ResultNode rootResultNode, ClawSetting clawSetting) {
@@ -105,7 +105,7 @@ public abstract class AbstractClaw implements IClaw {
 
 	@Override
 	public Object get(String path) {
-		crawlRNode(path);
+		crawlResultNode(path);
 		return currentResultNode.getValue();
 	}
 
@@ -120,7 +120,7 @@ public abstract class AbstractClaw implements IClaw {
 		return rootResultNode.getValue();
 	}
 	
-	protected void crawlRNode(String path) {
+	protected void crawlResultNode(String path) {
 		transformPathToNodeList(path);
 		currentResultNode = rootResultNode;
 		for (NaviNode naviNode : naviNodeList) {
@@ -135,7 +135,7 @@ public abstract class AbstractClaw implements IClaw {
 	
 	protected void transformPathToSegmentList(String path) {
 		segmentList.clear();
-		StringUtil.splitStr(path, ".", segmentList);
+		StringUtil.splitStr(path, clawSetting.getSetting("path.delimiter"), segmentList);
 	}
 	
 	protected void transformSegmentListToNodeList(String path) {
@@ -151,7 +151,7 @@ public abstract class AbstractClaw implements IClaw {
 	}
 	
 	protected NaviNodeAnalyzer getNaviNodeAnalyzer(String segment) {
-		if (segment.startsWith("")) {
+		if (segment.startsWith(clawSetting.getSetting("index.flag"))) {
 			return naviNodeAnalyzers.get("index");
 		}
 		return naviNodeAnalyzers.get("name");
@@ -162,10 +162,4 @@ public abstract class AbstractClaw implements IClaw {
 		naviNodeAnalyzers.put("index", new IndexNodeAnalyzer(clawSetting.getSetting("index.flag"), clawSetting.getSetting("depth.flag")));
 	}
 	
-	protected static ClawSetting getDefaultClawSetting() {
-		ClawSetting clawSetting = new ClawSetting();
-		clawSetting.addSetting("index.flag", "#");
-		clawSetting.addSetting("depth.flag", "!");
-		return clawSetting;
-	}
 }

@@ -104,7 +104,7 @@ public class Claw implements IClaw {
 	}
 	
 	@Override
-	public List<Object> getList(String path) {
+	public <T> List<T> getList(String path) {
 		return claw.getList(path);
 	}
 
@@ -119,7 +119,7 @@ public class Claw implements IClaw {
 	}
 	
 	@Override
-	public Claw getClaw(String path) {
+	public IClaw getClaw(String path) {
 		return new Claw(claw.getClaw(path));
 	}
 

@@ -20,7 +20,7 @@ public class W3cXmlClaw extends AbstractClaw {
 	
 	@Override
 	public IClaw getClaw(String path) {
-		crawlRNode(path);
+		crawlResultNode(path);
 		return new W3cXmlClaw(currentResultNode);
 	}
 
