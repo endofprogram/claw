@@ -3,7 +3,6 @@ package org.eop.claw.node.analyzer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eop.chassis.util.EmptyUtil;
 import org.eop.chassis.util.StringUtil;
 import org.eop.claw.node.NaviNode;
 import org.eop.claw.node.NaviNodeAnalyzer;
@@ -92,7 +91,7 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 		NodeSetting nodeSetting = new NodeSetting();
 		int beginIndex = getSettingBeginIndex(segment);
 		String settingStr = segment.substring(beginIndex, segment.length() - 1);
-		if (EmptyUtil.notEmpty(settingStr)) {
+		if (settingStr != null && !settingStr.isEmpty()) {
 			List<String> strList = new ArrayList<>();
 			StringUtil.splitStr(settingStr, ",", strList);
 			List<String> kvList = new ArrayList<>(2);
