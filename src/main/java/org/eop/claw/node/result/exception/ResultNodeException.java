@@ -10,6 +10,18 @@ public class ResultNodeException extends ClawException {
 
 	private static final long serialVersionUID = -1102199915742309420L;
 
+	public ResultNodeException(String message) {
+		super(message);
+	}
+	
+	public ResultNodeException(Throwable cause) {
+		super(cause);
+	}
+	
+	public ResultNodeException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
 	public ResultNodeException(String message, String segment) {
 		super(message, segment);
 	}

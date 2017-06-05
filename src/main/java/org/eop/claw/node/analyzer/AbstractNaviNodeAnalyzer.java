@@ -9,6 +9,7 @@ import org.eop.claw.node.NaviNode;
 import org.eop.claw.node.NaviNodeAnalyzer;
 import org.eop.claw.node.NodeSetting;
 import org.eop.claw.node.ResultType;
+import org.eop.claw.node.analyzer.exception.NaviNodeAnalyzerException;
 
 /**
  * @author lixinjie
@@ -65,7 +66,11 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 	protected int analyzeDepth(String segment) {
 		int index = segment.indexOf(depthFlag);
 		if (index > -1) {
-			Integer.parseInt(segment.substring(index + 1, index + 2));
+			try {
+				Integer.parseInt(segment.substring(index + 1, index + 2));
+			} catch (Exception e) {
+				throw new NaviNodeAnalyzerException("segment '" + segment + "' is invalid", e);
+			}
 		}
 		return 0;
 	}
@@ -80,7 +85,7 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 		if (segment.endsWith(">")) {
 			return ResultType.Element;
 		}
-		return null;
+		throw new NaviNodeAnalyzerException("segment '" + segment + "' is invalid");
 	}
 	
 	protected NodeSetting analyzeNodeSetting(String segment) {
@@ -110,7 +115,7 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 				return endIndex;
 			}
 		}
-		return 0;
+		throw new NaviNodeAnalyzerException("segment '" + segment + "' is invalid");
 	}
 	
 	protected int getSettingBeginIndex(String segment) {
@@ -121,6 +126,6 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 				return endIndex + 1;
 			}
 		}
-		return 0;
+		throw new NaviNodeAnalyzerException("segment '" + segment + "' is invalid");
 	}
 }

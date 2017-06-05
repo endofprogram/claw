@@ -19,14 +19,8 @@ public class W3cXmlClaw extends AbstractClaw {
 	}
 	
 	@Override
-	public IClaw getClaw(String path) {
-		crawlResultNode(path);
+	protected IClaw getClaw() {
 		return new W3cXmlClaw(currentResultNode);
-	}
-
-	@Override
-	public <T> T get(String path, Class<T> targetClass) {
-		return null;
 	}
 
 }

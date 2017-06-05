@@ -3,6 +3,7 @@ package org.eop.claw.node.result;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eop.chassis.util.IndexUtil;
 import org.eop.claw.node.NaviNode;
 import org.eop.claw.node.ResultNode;
 import org.eop.claw.node.ResultType;
@@ -42,7 +43,7 @@ public abstract class AbstractListResult extends AbstractResultNode {
 		if (naviNode instanceof NameNode) {
 			return getListResult((NameNode)naviNode);
 		}
-		throw new ResultNodeException("", naviNode.getSegment());
+		throw new ResultNodeException("only allowed to navi by name or index at this point, segment '" + naviNode.getSegment() + "' is invalid");
 	}
 
 	@Override
@@ -50,7 +51,10 @@ public abstract class AbstractListResult extends AbstractResultNode {
 		return objects;
 	}
 	
-	protected abstract AbstractObjectResult getObjectResult(SingleIndex singleIndex);
+	protected AbstractObjectResult getObjectResult(SingleIndex singleIndex) {
+		Object object = objects.get(IndexUtil.transform(singleIndex.getIndex(), objects.size()));
+		return getObjectResult(object);
+	}
 	
 	@SuppressWarnings("unchecked")
 	protected AbstractListResult getListResult(IndexNode indexNode) {
@@ -82,12 +86,12 @@ public abstract class AbstractListResult extends AbstractResultNode {
 	}
 	
 	protected Object getValueByIndex(List<Object> objects, SingleIndex singleIndex) {
-		return objects.get(singleIndex.getIndex());
+		return objects.get(IndexUtil.transform(singleIndex.getIndex(), objects.size()));
 	}
 	
 	protected List<Object> getValueByIndexes(List<Object> objects, RangeIndex rangeIndex) {
-		Integer beginIndex = rangeIndex.getBeginIndex();
-		Integer endIndex = rangeIndex.getEndIndex();
+		Integer beginIndex = IndexUtil.transform(rangeIndex.getBeginIndex(), objects.size());
+		Integer endIndex = IndexUtil.transform(rangeIndex.getEndIndex(), objects.size(), 1);
 		List<Object> objectList = new ArrayList<>(endIndex - beginIndex);
 		for (int index = beginIndex; index < endIndex; index++) {
 			objectList.add(objects.get(index));
@@ -99,34 +103,36 @@ public abstract class AbstractListResult extends AbstractResultNode {
 		List<Integer> indexes = disperIndex.getIndexes();
 		List<Object> objectList = new ArrayList<>(indexes.size());
 		for (Integer index : indexes) {
-			objectList.add(objects.get(index));
+			objectList.add(objects.get(IndexUtil.transform(index, objects.size())));
 		}
 		return objectList;
 	}
 	
 	protected ElementResult getElementResult(SingleIndex singleIndex) {
-		return new ElementResult(objects.get(singleIndex.getIndex()));
+		return new ElementResult(objects.get(IndexUtil.transform(singleIndex.getIndex(), objects.size())));
 	}
 
 	protected AbstractListResult getListResult(NameNode nameNode) {
-		List<Object> objectList = getListResultRecursively(objects, nameNode.getName(), nameNode.getDepth());
+		List<Object> objectList = getListResultRecursively(objects, nameNode, nameNode.getDepth());
 		return getListResult(objectList);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<Object> getListResultRecursively(List<Object> objects, String name, int depth) {
+	protected List<Object> getListResultRecursively(List<Object> objects, NameNode nameNode, int depth) {
 		List<Object> objectList = new ArrayList<>();
 		for (Object object : objects) {
 			if (depth > 0) {
-				objectList.add(getListResultRecursively((List<Object>)object, name, depth - 1));
+				objectList.add(getListResultRecursively((List<Object>)object, nameNode, depth - 1));
 			} else {
-				objectList.add(getValueByName(object, name));
+				objectList.add(getValueByName(object, nameNode));
 			}
 		}
 		return objectList;
 	}
 	
+	protected abstract AbstractObjectResult getObjectResult(Object object);
+	
 	protected abstract AbstractListResult getListResult(List<Object> objects);
 	
-	protected abstract Object getValueByName(Object object, String name);
+	protected abstract Object getValueByName(Object object, NameNode nameNode);
 }

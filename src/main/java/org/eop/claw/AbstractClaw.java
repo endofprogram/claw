@@ -1,16 +1,12 @@
 package org.eop.claw;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.eop.chassis.util.StringUtil;
-import org.eop.chassis.util.TypeUtil;
+import org.eop.claw.exception.ResultException;
 import org.eop.claw.node.NaviNode;
 import org.eop.claw.node.NaviNodeAnalyzer;
 import org.eop.claw.node.ResultNode;
@@ -37,83 +33,18 @@ public abstract class AbstractClaw implements IClaw {
 		this.clawSetting = clawSetting;
 		registerNaviNodeAnalyzer();
 	}
-	
-	@Override
-	public BigDecimal getBigDecimal(String path) {
-		return TypeUtil.toBigDecimal(get(path));
-	}
 
 	@Override
-	public BigInteger getBigInteger(String path) {
-		return TypeUtil.toBigInteger(get(path));
+	public IResult getResult(String path) {
+		try {
+			crawlResultNode(path);
+		} catch (Exception e) {
+			return new Result(false, null, new ResultException(e));
+		}
+		return new Result(true, getClaw(), null);
 	}
 
-	@Override
-	public Boolean getBoolean(String path) {
-		return TypeUtil.toBoolean(get(path));
-	}
-
-	@Override
-	public Byte getByte(String path) {
-		return TypeUtil.toByte(get(path));
-	}
-
-	@Override
-	public Date getDate(String path) {
-		return TypeUtil.toDate(get(path));
-	}
-
-	@Override
-	public Double getDouble(String path) {
-		return TypeUtil.toDouble(get(path));
-	}
-
-	@Override
-	public Float getFloat(String path) {
-		return TypeUtil.toFloat(get(path));
-	}
-
-	@Override
-	public Integer getInteger(String path) {
-		return TypeUtil.toInteger(get(path));
-	}
-
-	@Override
-	public Long getLong(String path) {
-		return TypeUtil.toLong(get(path));
-	}
-
-	@Override
-	public Short getShort(String path) {
-		return TypeUtil.toShort(get(path));
-	}
-
-	@Override
-	public String getString(String path) {
-		return TypeUtil.toString(get(path));
-	}
-
-	@Override
-	public Timestamp getTimestamp(String path) {
-		return TypeUtil.toTimestamp(get(path));
-	}
-	
-	@Override
-	public <T> List<T> getList(String path) {
-		return TypeUtil.asListType(get(path));
-	}
-
-	@Override
-	public Object get(String path) {
-		crawlResultNode(path);
-		return currentResultNode.getValue();
-	}
-
-	@Override
-	public abstract <T> T get(String path, Class<T> targetClass);
-
-	@Override
-	public abstract IClaw getClaw(String path);
+	protected abstract IClaw getClaw();
 	
 	@Override
 	public Object getUnderlyingData() {

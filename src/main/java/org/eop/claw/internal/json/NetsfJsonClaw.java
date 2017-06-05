@@ -20,14 +20,8 @@ public class NetsfJsonClaw extends AbstractClaw {
 	}
 	
 	@Override
-	public IClaw getClaw(String path) {
-		crawlResultNode(path);
+	protected IClaw getClaw() {
 		return new NetsfJsonClaw(currentResultNode);
-	}
-
-	@Override
-	public <T> T get(String path, Class<T> targetClass) {
-		return null;
 	}
 
 }

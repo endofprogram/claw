@@ -32,7 +32,7 @@ public abstract class AbstractObjectResult extends AbstractResultNode {
 				return getElementResult((NameNode)naviNode);
 			}
 		}
-		throw new ResultNodeException("", naviNode.getSegment());
+		throw new ResultNodeException("only allowed to navi by name at this point, segment '" + naviNode.getSegment() + "' is invalid");
 	}
 
 	@Override

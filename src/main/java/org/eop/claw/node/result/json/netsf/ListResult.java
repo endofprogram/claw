@@ -2,9 +2,10 @@ package org.eop.claw.node.result.json.netsf;
 
 import java.util.List;
 
-import org.eop.claw.node.navi.index.SingleIndex;
+import org.eop.claw.node.navi.NameNode;
 import org.eop.claw.node.result.AbstractListResult;
 import org.eop.claw.node.result.AbstractObjectResult;
+import org.eop.claw.node.result.exception.ResultNodeException;
 
 import net.sf.json.JSONObject;
 
@@ -19,8 +20,8 @@ public class ListResult extends AbstractListResult {
 	}
 
 	@Override
-	protected AbstractObjectResult getObjectResult(SingleIndex singleIndex) {
-		return new NetsfJsonResult((JSONObject)objects.get(singleIndex.getIndex()));
+	protected AbstractObjectResult getObjectResult(Object object) {
+		return new NetsfJsonResult((JSONObject)object);
 	}
 
 	@Override
@@ -29,8 +30,11 @@ public class ListResult extends AbstractListResult {
 	}
 
 	@Override
-	protected Object getValueByName(Object object, String name) {
-		return ((JSONObject)object).get(name);
+	protected Object getValueByName(Object object, NameNode nameNode) {
+		if (((JSONObject)object).containsKey(nameNode.getName())) {
+			return ((JSONObject)object).get(nameNode.getName());
+		}
+		throw new ResultNodeException("not contains a subnode with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node");
 	}
 
 }

@@ -24,15 +24,18 @@ public class W3cElementResult extends AbstractObjectResult {
 	@Override
 	protected AbstractObjectResult getObjectResult(NameNode nameNode) {
 		Element element = getFirstChildWithTagName((Element)object, nameNode.getName());
-		if (element == null) {
-			throw new ResultNodeException("", nameNode.getSegment());
+		if (element != null) {
+			return new W3cElementResult(element);
 		}
-		return new W3cElementResult(element);
+		throw new ResultNodeException("not contains a subnode with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node");
 	}
 
 	@Override
 	protected AbstractListResult getListResult(NameNode nameNode) {
-		return new ListResult(getChildrenWithTagName((Element)object, nameNode.getName()));
+		if (!getChildrenWithTagName((Element)object, nameNode.getName()).isEmpty()) {
+			return new ListResult(getChildrenWithTagName((Element)object, nameNode.getName()));
+		}
+		throw new ResultNodeException("not contains a subnode with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node");
 	}
 
 	@Override
@@ -40,7 +43,10 @@ public class W3cElementResult extends AbstractObjectResult {
 		if ("text".equals(nameNode.getName())) {
 			return new ElementResult(((Element)object).getTextContent());
 		}
-		return new ElementResult(((Element)object).getAttribute(nameNode.getName()));
+		if (((Element)object).getAttributeNode(nameNode.getName()) != null) {
+			return new ElementResult(((Element)object).getAttributeNode(nameNode.getName()).getValue());
+		}
+		throw new ResultNodeException("not contains a attribute with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node");
 	}
 
 	protected Element getFirstChildWithTagName(Element element, String tagName) {

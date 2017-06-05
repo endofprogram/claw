@@ -3,9 +3,10 @@ package org.eop.claw.node.result.map;
 import java.util.List;
 import java.util.Map;
 
-import org.eop.claw.node.navi.index.SingleIndex;
+import org.eop.claw.node.navi.NameNode;
 import org.eop.claw.node.result.AbstractListResult;
 import org.eop.claw.node.result.AbstractObjectResult;
+import org.eop.claw.node.result.exception.ResultNodeException;
 
 /**
  * @author lixinjie
@@ -19,8 +20,8 @@ public class ListResult extends AbstractListResult {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected AbstractObjectResult getObjectResult(SingleIndex singleIndex) {
-		return new MapResult((Map<String, Object>)objects.get(singleIndex.getIndex()));
+	protected AbstractObjectResult getObjectResult(Object object) {
+		return new MapResult((Map<String, Object>)object);
 	}
 
 	@Override
@@ -30,8 +31,11 @@ public class ListResult extends AbstractListResult {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Object getValueByName(Object object, String name) {
-		return ((Map<String, Object>)object).get(name);
+	protected Object getValueByName(Object object, NameNode nameNode) {
+		if (((Map<String, Object>)object).containsKey(nameNode.getName())) {
+			return ((Map<String, Object>)object).get(nameNode.getName());
+		}
+		throw new ResultNodeException("not contains a subnode with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node");
 	}
 	
 }

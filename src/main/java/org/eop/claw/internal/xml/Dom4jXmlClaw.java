@@ -19,13 +19,8 @@ public class Dom4jXmlClaw extends AbstractClaw {
 	}
 
 	@Override
-	public IClaw getClaw(String path) {
-		crawlResultNode(path);
+	protected IClaw getClaw() {
 		return new Dom4jXmlClaw(currentResultNode);
 	}
 
-	@Override
-	public <T> T get(String path, Class<T> targetClass) {
-		return null;
-	}
 }

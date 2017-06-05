@@ -20,14 +20,8 @@ public class MapClaw extends AbstractClaw {
 	}
 
 	@Override
-	public IClaw getClaw(String path) {
-		crawlResultNode(path);
+	protected IClaw getClaw() {
 		return new MapClaw(currentResultNode);
-	}
-
-	@Override
-	public <T> T get(String path, Class<T> targetClass) {
-		return null;
 	}
 
 }

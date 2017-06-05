@@ -19,7 +19,7 @@ public class ElementResult extends AbstractResultNode {
 
 	@Override
 	public ResultNode getResult(NaviNode naviNode) {
-		throw new ResultNodeException("", naviNode.getSegment());
+		throw new ResultNodeException("not allowed to navi any more at this point, segment '" + naviNode.getSegment() + "' is invalid");
 	}
 
 	@Override

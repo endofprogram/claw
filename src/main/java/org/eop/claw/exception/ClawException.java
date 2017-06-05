@@ -8,6 +8,18 @@ public class ClawException extends RuntimeException {
 
 	private static final long serialVersionUID = -6304654493313388193L;
 	
+	public ClawException(String message) {
+		super(message);
+	}
+	
+	public ClawException(Throwable cause) {
+		super(cause);
+	}
+	
+	public ClawException(String message, Throwable cause) {
+		super(message, cause);
+	}
+	
 	public ClawException(String message, String segment) {
 		super(generateMessage(message, segment));
 	}
