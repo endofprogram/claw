@@ -18,20 +18,40 @@ public class Claw implements IClaw {
 		this(new MapClaw(map));
 	}
 	
+	public Claw(Map<String, Object> map, ClawSetting clawSetting) {
+		this(new MapClaw(map, clawSetting));
+	}
+	
 	public Claw(net.sf.json.JSONObject jsonObject) {
 		this(new NetsfJsonClaw(jsonObject));
+	}
+	
+	public Claw(net.sf.json.JSONObject jsonObject, ClawSetting clawSetting) {
+		this(new NetsfJsonClaw(jsonObject, clawSetting));
 	}
 	
 	public Claw(com.alibaba.fastjson.JSONObject jsonObject) {
 		this(new FastJsonClaw(jsonObject));
 	}
 	
+	public Claw(com.alibaba.fastjson.JSONObject jsonObject, ClawSetting clawSetting) {
+		this(new FastJsonClaw(jsonObject, clawSetting));
+	}
+	
 	public Claw(org.dom4j.Element element) {
 		this(new Dom4jXmlClaw(element));
 	}
 	
+	public Claw(org.dom4j.Element element, ClawSetting clawSetting) {
+		this(new Dom4jXmlClaw(element, clawSetting));
+	}
+	
 	public Claw(org.w3c.dom.Element element) {
 		this(new W3cXmlClaw(element));
+	}
+	
+	public Claw(org.w3c.dom.Element element, ClawSetting clawSetting) {
+		this(new W3cXmlClaw(element, clawSetting));
 	}
 	
 	protected Claw(IClaw claw) {

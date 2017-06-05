@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import org.eop.chassis.util.TypeUtil;
 import org.eop.claw.exception.ResultException;
@@ -27,71 +26,66 @@ public class Result implements IResult {
 
 	@Override
 	public BigDecimal getBigDecimal() {
-		return TypeUtil.toBigDecimal(get());
+		return TypeUtil.toBigDecimal(getValue());
 	}
 
 	@Override
 	public BigInteger getBigInteger() {
-		return TypeUtil.toBigInteger(get());
+		return TypeUtil.toBigInteger(getValue());
 	}
 
 	@Override
 	public Boolean getBoolean() {
-		return TypeUtil.toBoolean(get());
+		return TypeUtil.toBoolean(getValue());
 	}
 
 	@Override
 	public Byte getByte() {
-		return TypeUtil.toByte(get());
+		return TypeUtil.toByte(getValue());
 	}
 
 	@Override
 	public Date getDate(String format) {
-		return TypeUtil.toDate(get(), format);
+		return TypeUtil.toDate(getValue(), format);
 	}
 
 	@Override
 	public Double getDouble() {
-		return TypeUtil.toDouble(get());
+		return TypeUtil.toDouble(getValue());
 	}
 
 	@Override
 	public Float getFloat() {
-		return TypeUtil.toFloat(get());
+		return TypeUtil.toFloat(getValue());
 	}
 
 	@Override
 	public Integer getInteger() {
-		return TypeUtil.toInteger(get());
+		return TypeUtil.toInteger(getValue());
 	}
 
 	@Override
 	public Long getLong() {
-		return TypeUtil.toLong(get());
+		return TypeUtil.toLong(getValue());
 	}
 
 	@Override
 	public Short getShort() {
-		return TypeUtil.toShort(get());
+		return TypeUtil.toShort(getValue());
 	}
 
 	@Override
 	public String getString() {
-		return TypeUtil.toString(get());
+		return TypeUtil.toString(getValue());
 	}
 
 	@Override
 	public Timestamp getTimestamp(String format) {
-		return TypeUtil.toTimestamp(get(), format);
+		return TypeUtil.toTimestamp(getValue(), format);
 	}
 
 	@Override
-	public <T> List<T> getList() {
-		return TypeUtil.toList(get());
-	}
-
-	@Override
-	public Object get() {
+	public Object getValue() {
 		if (found) {
 			return claw.getUnderlyingData();
 		}

@@ -38,9 +38,7 @@ public interface IResult {
 	
 	Timestamp getTimestamp(String format);
 	
-	<T> List<T> getList();
-	
-	Object get();
+	Object getValue();
 	
 	IClaw getClaw();
 	

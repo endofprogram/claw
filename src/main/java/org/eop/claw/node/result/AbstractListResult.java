@@ -73,13 +73,9 @@ public abstract class AbstractListResult extends AbstractResultNode {
 			if (indexNode instanceof SingleIndex) {
 				return getValueByIndex(objects, (SingleIndex)indexNode);
 			} else if (indexNode instanceof RangeIndex) {
-				if (((RangeIndex)indexNode).getBeginIndex() == 0 && ((RangeIndex)indexNode).getEndIndex() == -1) {
-					objectList.addAll(getValueByIndexes(objects, (RangeIndex)indexNode));
-				} else {
-					objectList.add(getValueByIndexes(objects, (RangeIndex)indexNode));
-				}
+				return getValueByIndexes(objects, (RangeIndex)indexNode);
 			} else {
-				objectList.add(getValueByIndexes(objects, (DisperIndex)indexNode));
+				return getValueByIndexes(objects, (DisperIndex)indexNode);
 			}
 		}
 		return objectList;

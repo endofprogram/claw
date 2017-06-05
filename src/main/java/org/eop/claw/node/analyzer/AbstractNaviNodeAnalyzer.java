@@ -66,7 +66,7 @@ public abstract class AbstractNaviNodeAnalyzer implements NaviNodeAnalyzer {
 		int index = segment.indexOf(depthFlag);
 		if (index > -1) {
 			try {
-				Integer.parseInt(segment.substring(index + 1, index + 2));
+				return Integer.parseInt(segment.substring(index + 1, index + 2));
 			} catch (Exception e) {
 				throw new NaviNodeAnalyzerException("segment '" + segment + "' is invalid", e);
 			}

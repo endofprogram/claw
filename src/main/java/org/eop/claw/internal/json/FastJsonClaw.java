@@ -1,6 +1,7 @@
 package org.eop.claw.internal.json;
 
 import org.eop.claw.AbstractClaw;
+import org.eop.claw.ClawSetting;
 import org.eop.claw.IClaw;
 import org.eop.claw.node.ResultNode;
 import org.eop.claw.node.result.json.fast.FastJsonResult;
@@ -15,13 +16,21 @@ public class FastJsonClaw extends AbstractClaw {
 		this(new FastJsonResult(json));
 	}
 	
+	public FastJsonClaw(JSONObject json, ClawSetting clawSetting) {
+		this(new FastJsonResult(json), clawSetting);
+	}
+	
 	protected FastJsonClaw(ResultNode rootResultNode) {
 		super(rootResultNode);
+	}
+	
+	protected FastJsonClaw(ResultNode rootResultNode, ClawSetting clawSetting) {
+		super(rootResultNode, clawSetting);
 	}
 
 	@Override
 	protected IClaw getClaw() {
-		return new FastJsonClaw(currentResultNode);
+		return new FastJsonClaw(currentResultNode, clawSetting);
 	}
 
 }

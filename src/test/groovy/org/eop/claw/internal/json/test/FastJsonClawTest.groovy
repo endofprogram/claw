@@ -1,6 +1,7 @@
-package org.eop.claw.internal.json
+package org.eop.claw.internal.json.test
 
-import org.eop.chassis.test.AbstractGroovyTest
+import org.eop.chassis.test.AbstractCommonTest
+import org.eop.claw.internal.json.FastJsonClaw
 import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Before
@@ -12,7 +13,7 @@ import com.alibaba.fastjson.JSONObject
 /**
  * @author lixinjie
  */
-class FastJsonClawTest extends AbstractGroovyTest {
+class FastJsonClawTest extends AbstractCommonTest {
 
 	FastJsonClaw claw
 	
@@ -23,81 +24,81 @@ class FastJsonClawTest extends AbstractGroovyTest {
 	
 	@Test
 	void testGet01() {
-		Assert.assertEquals("0", claw.get("res_code<>"))
+		Assert.assertEquals(0, claw.getResult("res_code<>").getInteger())
 	}
 	
 	@Test
 	void testGet02() {
-		Assert.assertEquals("Processing the request succeeded!", claw.get("res_desc<>"))
+		Assert.assertEquals("Processing the request succeeded!", claw.getResult("res_desc<>").getValue())
 	}
 	
 	@Test
 	void testGet03() {
-		Assert.assertThat(claw.get("result{}"), Matchers.isA(JSONObject.class))
+		Assert.assertThat(claw.getResult("result{}").getValue(), Matchers.isA(JSONObject.class))
 	}
 	
 	@Test
 	void testGet04() {
-		Assert.assertThat(claw.get("result{}").getClass(), Matchers.sameInstance(JSONObject.class))
+		Assert.assertThat(claw.getResult("result{}").getValue().getClass(), Matchers.sameInstance(JSONObject.class))
 	}
 	
 	@Test
 	void testGet05() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[]"), Matchers.isA(JSONArray.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[]").getValue(), Matchers.isA(JSONArray.class))
 	}
 	
 	@Test
 	void testGet06() {
-		Assert.assertThat(claw.get("result{}.MEALINFOUPLIST[]"), Matchers.isA(List.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOUPLIST[]").getValue(), Matchers.isA(List.class))
 	}
 	
 	@Test
 	void testGet07() {
-		Assert.assertThat(claw.get("result{}.MEALINFOGPRSLIST[]"), Matchers.isA(JSONArray.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOGPRSLIST[]").getValue(), Matchers.isA(JSONArray.class))
 	}
 	
 	@Test
 	void testGet08() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[].0()"), Matchers.isA(JSONObject.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[].#0<>").getValue(), Matchers.isA(JSONObject.class))
 	}
 	
 	@Test
 	void testGet09() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[].-1()"), Matchers.isA(JSONObject.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[].#-1{}").getValue(), Matchers.isA(JSONObject.class))
 	}
 	
 	@Test
 	void testGet10() {
-		Assert.assertEquals("2016-12-02 10:14:30", claw.get("result{}.MEALINFOINLIST[].0().Col_19<>"))
+		Assert.assertEquals("2016-12-02 10:14:30", claw.getResult("result{}.MEALINFOINLIST[].#0{}.Col_19<>").getString())
 	}
 	
 	@Test
 	void testGet11() {
-		Assert.assertEquals("石家庄2013畅聊卡5元流量包", claw.get("result{}.MEALINFOINLIST[].-1().Col_8<>"))
+		Assert.assertEquals("石家庄2013畅聊卡5元流量包", claw.getResult("result{}.MEALINFOINLIST[].#-1{}.Col_8<>").getString())
 	}
 	
 	@Test
 	void testGet12() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[].0*-1()"), Matchers.isA(List.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[].#0*-1[]").getValue(), Matchers.isA(List.class))
 	}
 	
 	@Test
 	void testGet13() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[].0*-1().1+3()"), Matchers.isA(List.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[].#0*-1[].#1+3[]").getValue(), Matchers.isA(List.class))
 	}
 	
 	@Test
 	void testGet14() {
-		Assert.assertThat(claw.get("result{}.MEALINFOINLIST[].0*-1().1+2().-1()"), Matchers.isA(JSONObject.class))
+		Assert.assertThat(claw.getResult("result{}.MEALINFOINLIST[].#0*-1[].#1+2[].#-1<>").getValue(), Matchers.isA(JSONObject.class))
 	}
 	
 	@Test
 	void testGet15() {
-		Assert.assertEquals("石家庄2013畅聊卡2元短信包", claw.get("result{}.MEALINFOINLIST[].0*-1().1+2().-1().Col_8<>"))
+		Assert.assertEquals("石家庄2013畅聊卡2元短信包", claw.getResult("result{}.MEALINFOINLIST[].#0*-1[].#1+2[].#-1{}.Col_8<>").getString())
 	}
 	
 	@Test
 	void testGet16() {
-		Assert.assertEquals("石家庄2013畅聊卡2元短信包", claw.get("result{}.MEALINFOINLIST[].0*-1().1+2().1().Col_8<>"))
+		Assert.assertEquals("石家庄2013畅聊卡2元短信包", claw.getResult("result{}.MEALINFOINLIST[].#0*-1[].#1+2[].#1{}.Col_8<>").getString())
 	}
 }
