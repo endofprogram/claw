@@ -22,8 +22,4 @@ public class NaviNodeAnalyzerException extends ClawException {
 		super(message, cause);
 	}
 	
-	public NaviNodeAnalyzerException(String message, String segment) {
-		super(message, segment);
-	}
-
 }

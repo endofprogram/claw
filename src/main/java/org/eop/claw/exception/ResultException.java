@@ -20,8 +20,4 @@ public class ResultException extends ClawException {
 		super(message, cause);
 	}
 	
-	public ResultException(String message, String segment) {
-		super(message, segment);
-	}
-
 }

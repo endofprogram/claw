@@ -22,8 +22,4 @@ public class ResultNodeException extends ClawException {
 		super(message, cause);
 	}
 	
-	public ResultNodeException(String message, String segment) {
-		super(message, segment);
-	}
-
 }

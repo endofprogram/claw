@@ -20,11 +20,4 @@ public class ClawException extends RuntimeException {
 		super(message, cause);
 	}
 	
-	public ClawException(String message, String segment) {
-		super(generateMessage(message, segment));
-	}
-
-	protected static String generateMessage(String message, String segment) {
-		return message + segment;
-	}
 }
