@@ -3,6 +3,5 @@
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">C:\person\work\jython\jython2.7.0\jython.jar</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.7</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/${PROJECT_DIR_NAME}/src/sample/jython</path>
 </pydev_pathproperty>
 </pydev_project>
