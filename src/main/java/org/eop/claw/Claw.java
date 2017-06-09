@@ -2,6 +2,7 @@ package org.eop.claw;
 
 import java.util.Map;
 
+import org.eop.claw.internal.bean.BeanClaw;
 import org.eop.claw.internal.json.FastJsonClaw;
 import org.eop.claw.internal.json.NetsfJsonClaw;
 import org.eop.claw.internal.map.MapClaw;
@@ -52,6 +53,14 @@ public class Claw implements IClaw {
 	
 	public Claw(org.w3c.dom.Element element, ClawSetting clawSetting) {
 		this(new W3cXmlClaw(element, clawSetting));
+	}
+	
+	public Claw(Object bean) {
+		this(new BeanClaw(bean));
+	}
+	
+	public Claw(Object bean, ClawSetting clawSetting) {
+		this(new BeanClaw(bean, clawSetting));
 	}
 	
 	protected Claw(IClaw claw) {
