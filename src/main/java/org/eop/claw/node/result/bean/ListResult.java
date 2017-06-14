@@ -37,7 +37,7 @@ public class ListResult extends AbstractListResult {
 			}
 		} else {
 			try {
-				return object.getClass().getMethod(nameNode.getName()).invoke(object);
+				return object.getClass().getMethod("get" + nameNode.getName().substring(0, 1).toUpperCase() + nameNode.getName().substring(1)).invoke(object);
 			} catch (Exception e) {
 				throw new ResultNodeException("not contains a subnode with name '" + nameNode.getName() + "' at this point, see segment '" + nameNode.getSegment() + "' or the current result node", e);
 			}

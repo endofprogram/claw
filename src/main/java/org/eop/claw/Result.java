@@ -3,7 +3,9 @@ package org.eop.claw;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.eop.chassis.util.TypeUtil;
 import org.eop.claw.exception.ResultException;
@@ -84,12 +86,33 @@ public class Result implements IResult {
 		return TypeUtil.toTimestamp(getValue(), format);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Object getValue() {
+	public <T> T getValue() {
 		if (found) {
-			return claw.getUnderlyingData();
+			return (T)claw.getUnderlyingData();
 		}
 		throw exception;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> getList() {
+		T value = getValue();
+		if (value instanceof List<?>) {
+			return (List<T>)value;
+		}
+		throw new ResultException("the value " + value + " is not a list, can not use getList() method");
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> getAsList() {
+		T value = getValue();
+		if (value instanceof List<?>) {
+			return (List<T>)value;
+		}
+		return Arrays.asList(value);
 	}
 	
 	@Override
